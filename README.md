@@ -1,2 +1,152 @@
 # mi-carta-de-amor-
 Para ti 💘
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta 💌</title>
+
+<style>
+body{
+  margin:0;
+  overflow:hidden;
+  background: radial-gradient(circle at center,#ff9ecf,#ff4da6);
+  font-family: 'Segoe UI', cursive;
+}
+
+/* Texto interno */
+#contenido{
+  position:absolute;
+  top:22%;
+  left:50%;
+  transform:translateX(-50%);
+  width:75%;
+  max-height:260px;
+  overflow-y:auto;
+  display:none;
+  padding:20px;
+  background:white;
+  border-radius:18px;
+  box-shadow:0 0 30px rgba(0,0,0,0.25);
+  z-index:5;
+  font-size:15px;
+  line-height:1.6;
+}
+</style>
+</head>
+<body>
+
+<div id="contenido">
+<p>Han pasado 5 meses desde que nuestras vidas se unieron, y cada día sé que eres el hombre de mi vida ❤️.</p>
+<p>Estás en cada pensamiento y en cada latido de mi corazón; tu presencia ilumina mis días como un rayo de sol ☀️💖.</p>
+<p>Me haces sentir la chica más amada del mundo con tus mensajes, llamadas y palabras de amor 💌.</p>
+<p>Eres atento, cariñoso y siempre logras hacerme sonreír.</p>
+<p>Estoy orgullosa de nosotros y de nuestra relación.</p>
+<p>Eres mi compañero, mi amigo, mi confidente y mi todo 💞.</p>
+<p>Eres el hombre de mis sueños, mi alma gemela, y contigo siento que puedo conquistar el mundo.</p>
+<p>Te amo más de lo que las palabras pueden expresar 💕✨</p>
+<p><b>att: Selena❤️</b></p>
+</div>
+
+<audio id="musica" preload="auto">
+<source src="https://cdn.pixabay.com/download/audio/2022/02/23/audio_d1718f4c62.mp3?filename=romantic-love-11785.mp3" type="audio/mpeg">
+</audio>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+
+<script>
+
+const scene = new THREE.Scene();
+
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.set(0,1.5,7);
+
+const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+/* LUCES */
+scene.add(new THREE.AmbientLight(0xffffff,1));
+
+const light = new THREE.DirectionalLight(0xff99cc,1);
+light.position.set(5,10,5);
+scene.add(light);
+
+/* GRUPO CARTA */
+const group = new THREE.Group();
+group.scale.set(0.8,0.8,0.8);
+scene.add(group);
+
+/* BASE SOBRE */
+const baseGeo = new THREE.BoxGeometry(5,3,0.3);
+const baseMat = new THREE.MeshStandardMaterial({color:0xffd6eb});
+const base = new THREE.Mesh(baseGeo,baseMat);
+group.add(base);
+
+/* TAPA CON PIVOTE CORRECTO */
+const flapGeo = new THREE.BoxGeometry(5,3,0.2);
+const flapMat = new THREE.MeshStandardMaterial({color:0xff4da6});
+const flap = new THREE.Mesh(flapGeo,flapMat);
+
+/* crear pivote */
+const pivot = new THREE.Group();
+pivot.position.y = 1.5; 
+group.add(pivot);
+
+flap.position.y = -1.5;
+pivot.add(flap);
+
+let abierta = false;
+
+window.addEventListener("click",()=>{
+
+if(abierta) return;
+abierta = true;
+
+/* reproducir música */
+const music = document.getElementById("musica");
+music.play().catch(()=>{});
+
+/* abrir suavemente */
+let abrir = setInterval(()=>{
+if(pivot.rotation.x > -Math.PI/1.2){
+pivot.rotation.x -= 0.04;
+}else{
+clearInterval(abrir);
+document.getElementById("contenido").style.display="block";
+}
+},16);
+
+/* cámara entra suave */
+let zoom = setInterval(()=>{
+if(camera.position.z > 4.5){
+camera.position.z -= 0.03;
+}else{
+clearInterval(zoom);
+}
+},16);
+
+});
+
+/* flotación elegante */
+function animate(){
+requestAnimationFrame(animate);
+
+group.position.y = Math.sin(Date.now()*0.0015)*0.15;
+
+renderer.render(scene,camera);
+}
+
+animate();
+
+window.addEventListener("resize",()=>{
+camera.aspect = window.innerWidth/window.innerHeight;
+camera.updateProjectionMatrix();
+renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+</script>
+
+</body>
+</html>
