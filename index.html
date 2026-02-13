@@ -3,199 +3,269 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💌 Carta de San Valentín 💌</title>
+<title>Carta San Valentín</title>
 
 <style>
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 body{
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background: radial-gradient(circle at center, #ff9acb, #ff4f9a);
-  overflow:hidden;
-  font-family: "Brush Script MT", cursive;
+height:100vh;
+overflow:hidden;
+background:#ff6fae;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+font-family: Arial, sans-serif;
 }
 
-/* Fondo corazones */
+/* TEXTO SUPERIOR */
+.title{
+position:absolute;
+top:30px;
+font-size:28px;
+font-style:italic;
+color:white;
+text-shadow:0 0 15px #ff1493;
+z-index:10;
+}
+
+/* CORAZONES CAYENDO */
 .heart{
-  position:absolute;
-  width:20px;
-  height:20px;
-  background:red;
-  transform: rotate(45deg);
-  animation: float 10s linear infinite;
+position:absolute;
+width:20px;
+height:20px;
+background:red;
+transform:rotate(45deg);
+animation:fall linear infinite;
 }
 
 .heart::before,
 .heart::after{
-  content:"";
-  position:absolute;
-  width:20px;
-  height:20px;
-  background:red;
-  border-radius:50%;
+content:"";
+position:absolute;
+width:20px;
+height:20px;
+background:red;
+border-radius:50%;
 }
 
 .heart::before{
-  top:-10px;
-  left:0;
+top:-10px;
+left:0;
 }
 
 .heart::after{
-  left:-10px;
-  top:0;
+left:-10px;
+top:0;
 }
 
-@keyframes float{
-  0%{ transform: translateY(100vh) rotate(45deg); opacity:1;}
-  100%{ transform: translateY(-10vh) rotate(45deg); opacity:0;}
+@keyframes fall{
+0%{
+transform:translateY(-10vh) rotate(45deg);
+opacity:1;
+}
+100%{
+transform:translateY(110vh) rotate(45deg);
+opacity:0;
+}
 }
 
-/* Carta */
+/* ESCENA */
 .scene{
-  perspective:1200px;
+perspective:1500px;
 }
 
+/* CARTA */
 .envelope{
-  width:300px;
-  height:200px;
-  position:relative;
-  cursor:pointer;
-  transform-style:preserve-3d;
-  transition: transform 1.2s ease;
-  animation: flyIn 2s ease forwards;
+width:320px;
+height:220px;
+position:relative;
+cursor:pointer;
+transform-style:preserve-3d;
+transition:transform 1.2s ease;
+animation:flyIn 2s ease forwards;
 }
 
 @keyframes flyIn{
-  0%{
-    transform: translateY(-400px) scale(0.5);
-    opacity:0;
-  }
-  100%{
-    transform: translateY(0) scale(1);
-    opacity:1;
-  }
+0%{
+transform:translateY(-500px) scale(0.5);
+opacity:0;
+}
+100%{
+transform:translateY(0) scale(1);
+opacity:1;
+}
 }
 
+/* CUERPO */
 .front{
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:#fff;
-  border-radius:10px;
-  box-shadow:0 15px 40px rgba(0,0,0,0.3);
+position:absolute;
+width:100%;
+height:100%;
+background:white;
+border-radius:12px;
+box-shadow:0 20px 50px rgba(0,0,0,0.4);
 }
 
+/* TAPA */
 .flap{
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:#f8c8dc;
-  clip-path: polygon(0 0, 50% 60%, 100% 0);
-  transform-origin: top;
-  transition: transform 1s ease;
-  border-radius:10px 10px 0 0;
+position:absolute;
+width:100%;
+height:100%;
+background:#ffc0cb;
+clip-path: polygon(0 0, 50% 65%, 100% 0);
+transform-origin:top;
+transition:transform 1s ease;
+border-radius:12px 12px 0 0;
 }
 
+/* SELLO */
 .seal{
-  position:absolute;
-  top:80px;
-  left:130px;
-  font-size:40px;
+position:absolute;
+top:90px;
+left:140px;
+font-size:35px;
 }
 
+/* ALAS */
+.wing{
+position:absolute;
+width:60px;
+height:60px;
+top:-20px;
+background:white;
+border-radius:50%;
+animation:flap 1.5s infinite ease-in-out;
+}
+
+.left{
+left:-40px;
+}
+
+.right{
+right:-40px;
+}
+
+@keyframes flap{
+0%{transform:rotate(0deg);}
+50%{transform:rotate(15deg);}
+100%{transform:rotate(0deg);}
+}
+
+/* CARTA INTERIOR */
 .letter{
-  position:absolute;
-  width:280px;
-  height:180px;
-  background:white;
-  top:10px;
-  left:10px;
-  border-radius:10px;
-  padding:20px;
-  transform: translateY(100%);
-  transition: transform 1s ease;
-  overflow:auto;
-  text-align:center;
-  font-size:18px;
-  line-height:1.5;
+position:absolute;
+width:90%;
+height:85%;
+background:white;
+top:7%;
+left:5%;
+border-radius:10px;
+padding:20px;
+overflow-y:auto;
+transform:translateY(120%);
+transition:transform 1s ease;
+font-size:16px;
+line-height:1.6;
 }
 
+/* ABIERTO */
 .open .flap{
-  transform: rotateX(-180deg);
+transform:rotateX(-180deg);
 }
 
 .open .letter{
-  transform: translateY(0);
+transform:translateY(0);
 }
 
-.text{
-  color:#d1006f;
+.zoom{
+transform:scale(1.5);
 }
 
-.signature{
-  margin-top:15px;
-  font-size:20px;
+/* TULIPANES */
+.tulips{
+margin-top:15px;
+font-size:30px;
+opacity:0;
+transition:opacity 2s ease;
+text-align:center;
+}
+.showTulips{
+opacity:1;
 }
 </style>
 </head>
 
 <body>
 
+<div class="title">¿Quieres ser mi San Valentín❤️?</div>
+
 <audio id="music" src="musica.mp3"></audio>
 
 <div class="scene">
-  <div class="envelope" onclick="openLetter()">
-    <div class="front"></div>
-    <div class="flap"></div>
-    <div class="seal">💘</div>
+<div class="envelope" onclick="openLetter()">
 
-    <div class="letter">
-      <div class="text">
-        Han pasado 5 meses desde que nuestras vidas se unieron, y cada día sé que eres el hombre de mi vida ❤️.<br><br>
+<div class="wing left"></div>
+<div class="wing right"></div>
 
-        Estás en cada pensamiento y en cada latido de mi corazón; tu presencia ilumina mis días como un rayo de sol ☀️💖.<br><br>
+<div class="front"></div>
+<div class="flap"></div>
+<div class="seal">💘</div>
 
-        Me haces sentir la chica más amada del mundo con tus mensajes, llamadas y palabras de amor 💌.<br><br>
+<div class="letter" id="letterContent">
 
-        Eres atento, cariñoso y siempre logras hacerme sonreír.<br><br>
+Han pasado 5 meses desde que nuestras vidas se unieron, y cada día sé que eres el hombre de mi vida ❤️.<br><br>
 
-        Estoy orgullosa de nosotros y de nuestra relación.<br><br>
+Estás en cada pensamiento y en cada latido de mi corazón; tu presencia ilumina mis días como un rayo de sol ☀️💖.<br><br>
 
-        Eres mi compañero, mi amigo, mi confidente y mi todo 💞.<br><br>
+Me haces sentir la chica más amada del mundo con tus mensajes, llamadas y palabras de amor 💌.<br><br>
 
-        Eres el hombre de mis sueños, mi alma gemela, y contigo siento que puedo conquistar el mundo.<br><br>
+Eres atento, cariñoso y siempre logras hacerme sonreír.<br><br>
 
-        Te amo más de lo que las palabras pueden expresar 💕✨
-        
-        <div class="signature">
-          ATT: Selena ❤️
-        </div>
-      </div>
-    </div>
-  </div>
+Estoy orgullosa de nosotros y de nuestra relación.<br><br>
+
+Eres mi compañero, mi amigo, mi confidente y mi todo 💞.<br><br>
+
+Eres el hombre de mis sueños, mi alma gemela, y contigo siento que puedo conquistar el mundo.<br><br>
+
+Te amo más de lo que las palabras pueden expresar 💕✨<br><br>
+
+<strong>ATT: Selena ❤️</strong>
+
+<div class="tulips" id="tulips">🌷 🌷 🌷 🌷 🌷</div>
+
+</div>
+</div>
 </div>
 
 <script>
+
 function openLetter(){
-  document.querySelector(".envelope").classList.toggle("open");
-  document.getElementById("music").play();
+let env = document.querySelector(".envelope");
+env.classList.toggle("open");
+
+document.getElementById("music").play();
+
+setTimeout(()=>{
+env.classList.add("zoom");
+document.getElementById("tulips").classList.add("showTulips");
+},1200);
 }
 
-/* Crear corazones */
-for(let i=0;i<25;i++){
-  let heart = document.createElement("div");
-  heart.classList.add("heart");
-  heart.style.left = Math.random()*100+"vw";
-  heart.style.animationDuration = (5+Math.random()*5)+"s";
-  document.body.appendChild(heart);
+/* corazones */
+for(let i=0;i<30;i++){
+let heart=document.createElement("div");
+heart.classList.add("heart");
+heart.style.left=Math.random()*100+"vw";
+heart.style.animationDuration=(4+Math.random()*6)+"s";
+document.body.appendChild(heart);
 }
+
 </script>
 
 </body>
