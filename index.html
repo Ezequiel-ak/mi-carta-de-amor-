@@ -1,47 +1,89 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carta 3D 💌</title>
+<title>Carta Romántica 3D 💌</title>
 
 <style>
 body{
   margin:0;
   overflow:hidden;
-  background: linear-gradient(180deg,#ff9acb,#ffd6ec);
+  background: radial-gradient(circle at center,#ff9ecf,#ff4da6);
+  font-family: cursive;
 }
 
-#mensaje{
+/* TEXTO SUPERIOR */
+#titulo{
   position:absolute;
+  top:8%;
   width:100%;
   text-align:center;
-  top:15%;
   font-size:28px;
-  font-family:cursive;
   color:white;
-  text-shadow:0 0 10px #ff4da6;
+  text-shadow:0 0 10px #ff99cc;
   z-index:2;
 }
 
-button{
+/* BOTÓN */
+#btn{
   position:absolute;
-  bottom:10%;
+  bottom:8%;
   left:50%;
   transform:translateX(-50%);
   padding:12px 25px;
   font-size:18px;
   border:none;
-  border-radius:20px;
-  background:#ff4da6;
-  color:white;
+  border-radius:25px;
+  background:white;
+  color:#ff4da6;
   cursor:pointer;
+  z-index:2;
+}
+
+/* CONTENIDO INTERNO DESLIZABLE */
+#contenido{
+  position:absolute;
+  top:30%;
+  left:50%;
+  transform:translateX(-50%);
+  width:70%;
+  max-height:200px;
+  overflow-y:auto;
+  display:none;
+  padding:15px;
+  background:white;
+  border-radius:15px;
+  box-shadow:0 0 20px rgba(0,0,0,0.2);
+  z-index:3;
 }
 </style>
 </head>
 <body>
 
-<div id="mensaje">Toca el botón para abrir la carta 💕</div>
-<button onclick="abrirCarta()">Abrir Carta</button>
+<div id="titulo">Toca el botón 💕</div>
+<button id="btn">Abrir Carta</button>
+
+<div id="contenido">
+<h3>Para ti 💖</h3>
+<p>
+Desde que llegaste a mi vida todo es diferente.
+Cada sonrisa tuya ilumina mi mundo.
+No hay distancia ni tiempo que cambie lo que siento.
+Eres especial, única y maravillosa.
+</p>
+
+<p>
+Quiero que sigamos creando momentos,
+riéndonos sin razón,
+abrazándonos fuerte
+y soñando juntos.
+</p>
+
+<p>
+¿Quieres ser mi San Valentín? 💘
+</p>
+</div>
 
 <audio id="musica" src="https://cdn.pixabay.com/download/audio/2022/02/23/audio_d1718f4c62.mp3?filename=romantic-love-11785.mp3"></audio>
 
@@ -58,63 +100,68 @@ const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-/* LUCES CORRECTAS */
+/* LUCES */
+scene.add(new THREE.AmbientLight(0xffffff,1));
 
-const ambient = new THREE.AmbientLight(0xffffff,1);
-scene.add(ambient);
-
-const light = new THREE.DirectionalLight(0xff69b4,1.2);
+const light = new THREE.DirectionalLight(0xff99cc,1);
 light.position.set(5,10,5);
 scene.add(light);
 
-/* GRUPO CARTA */
-
+/* CARTA */
 const group = new THREE.Group();
-group.scale.set(0.8,0.8,0.8);
 scene.add(group);
 
-/* BASE */
+group.scale.set(0.9,0.9,0.9);
 
-const baseGeo = new THREE.BoxGeometry(4,2.5,0.4);
-const baseMat = new THREE.MeshStandardMaterial({
-  color:0xff4da6,
-  roughness:0.5
-});
+const baseGeo = new THREE.BoxGeometry(4,2.5,0.3);
+const baseMat = new THREE.MeshStandardMaterial({color:0xffcce6});
 const base = new THREE.Mesh(baseGeo,baseMat);
 group.add(base);
 
-/* TAPA */
-
-const flapGeo = new THREE.BoxGeometry(4,2.5,0.3);
-const flapMat = new THREE.MeshStandardMaterial({color:0xff2d8f});
+const flapGeo = new THREE.BoxGeometry(4,2.5,0.2);
+const flapMat = new THREE.MeshStandardMaterial({color:0xff4da6});
 const flap = new THREE.Mesh(flapGeo,flapMat);
-
 flap.position.y = 1.25;
-flap.position.z = -0.2;
-flap.rotation.x = 0;
+flap.position.z = -0.15;
 group.add(flap);
+
+/* CORAZONES FONDO */
+const hearts = [];
+const heartGeo = new THREE.SphereGeometry(0.15,16,16);
+const heartMat = new THREE.MeshStandardMaterial({color:0xff0066});
+
+for(let i=0;i<60;i++){
+  const h = new THREE.Mesh(heartGeo,heartMat);
+  h.position.set(
+    (Math.random()-0.5)*15,
+    Math.random()*10-5,
+    (Math.random()-0.5)*15
+  );
+  scene.add(h);
+  hearts.push(h);
+}
 
 let abierta = false;
 
-function abrirCarta(){
+document.getElementById("btn").onclick = function(){
 
 if(abierta) return;
 abierta = true;
 
-/* activar música (solo funciona tras tocar botón) */
 document.getElementById("musica").play();
 
-/* animación apertura suave */
+/* abrir carta */
 let abrir = setInterval(()=>{
 if(flap.rotation.x > -Math.PI/1.3){
-flap.rotation.x -= 0.04;
+flap.rotation.x -= 0.05;
 }else{
 clearInterval(abrir);
-document.getElementById("mensaje").innerHTML="¿Quieres ser mi San Valentín? 💖";
+document.getElementById("titulo").innerHTML="Para ti 💖";
+document.getElementById("contenido").style.display="block";
 }
 },16);
 
-/* cámara se acerca suave */
+/* cámara entra */
 let zoom = setInterval(()=>{
 if(camera.position.z > 5){
 camera.position.z -= 0.03;
@@ -125,12 +172,16 @@ clearInterval(zoom);
 
 }
 
-/* ANIMACIÓN SUAVE GENERAL */
-
+/* ANIMACIÓN GENERAL */
 function animate(){
 requestAnimationFrame(animate);
 
 group.rotation.y = Math.sin(Date.now()*0.001)*0.1;
+
+hearts.forEach(h=>{
+h.position.y += 0.01;
+if(h.position.y > 6) h.position.y = -5;
+});
 
 renderer.render(scene,camera);
 }
@@ -142,7 +193,6 @@ camera.aspect = window.innerWidth/window.innerHeight;
 camera.updateProjectionMatrix();
 renderer.setSize(window.innerWidth, window.innerHeight);
 });
-
 </script>
 
 </body>
