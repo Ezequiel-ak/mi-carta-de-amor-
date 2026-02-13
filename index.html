@@ -3,85 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carta Romántica 3D 💌</title>
+<title>Carta Romántica 💌</title>
 
 <style>
 body{
   margin:0;
   overflow:hidden;
   background: radial-gradient(circle at center,#ff9ecf,#ff4da6);
-  font-family: cursive;
+  font-family: 'Segoe UI', cursive;
 }
 
-/* TEXTO SUPERIOR */
-#titulo{
-  position:absolute;
-  top:8%;
-  width:100%;
-  text-align:center;
-  font-size:28px;
-  color:white;
-  text-shadow:0 0 10px #ff99cc;
-  z-index:2;
-}
-
-/* BOTÓN */
-#btn{
-  position:absolute;
-  bottom:8%;
-  left:50%;
-  transform:translateX(-50%);
-  padding:12px 25px;
-  font-size:18px;
-  border:none;
-  border-radius:25px;
-  background:white;
-  color:#ff4da6;
-  cursor:pointer;
-  z-index:2;
-}
-
-/* CONTENIDO INTERNO DESLIZABLE */
+/* Texto interno deslizable */
 #contenido{
   position:absolute;
-  top:30%;
+  top:25%;
   left:50%;
   transform:translateX(-50%);
-  width:70%;
-  max-height:200px;
+  width:75%;
+  max-height:260px;
   overflow-y:auto;
   display:none;
-  padding:15px;
+  padding:20px;
   background:white;
-  border-radius:15px;
-  box-shadow:0 0 20px rgba(0,0,0,0.2);
+  border-radius:20px;
+  box-shadow:0 0 30px rgba(0,0,0,0.25);
   z-index:3;
+  font-size:16px;
+  line-height:1.5;
 }
 </style>
 </head>
 <body>
 
-<div id="titulo">Toca el botón 💕</div>
-<button id="btn">Abrir Carta</button>
-
 <div id="contenido">
-<h3>Para ti 💖</h3>
 <p>
-Desde que llegaste a mi vida todo es diferente.
-Cada sonrisa tuya ilumina mi mundo.
-No hay distancia ni tiempo que cambie lo que siento.
-Eres especial, única y maravillosa.
+Han pasado 5 meses desde que nuestras vidas se unieron, y cada día sé que eres el hombre de mi vida ❤️.
 </p>
-
 <p>
-Quiero que sigamos creando momentos,
-riéndonos sin razón,
-abrazándonos fuerte
-y soñando juntos.
+Estás en cada pensamiento y en cada latido de mi corazón; tu presencia ilumina mis días como un rayo de sol ☀️💖.
 </p>
-
 <p>
-¿Quieres ser mi San Valentín? 💘
+Me haces sentir la chica más amada del mundo con tus mensajes, llamadas y palabras de amor 💌.
+</p>
+<p>
+Eres atento, cariñoso y siempre logras hacerme sonreír.
+Estoy orgullosa de nosotros y de nuestra relación.
+</p>
+<p>
+Eres mi compañero, mi amigo, mi confidente y mi todo 💞.
+</p>
+<p>
+Eres el hombre de mis sueños, mi alma gemela, y contigo siento que puedo conquistar el mundo.
+</p>
+<p>
+Te amo más de lo que las palabras pueden expresar 💕✨  
+<br><br>
+<b>att: Selena❤️</b>
 </p>
 </div>
 
@@ -102,40 +79,54 @@ document.body.appendChild(renderer.domElement);
 
 /* LUCES */
 scene.add(new THREE.AmbientLight(0xffffff,1));
-
 const light = new THREE.DirectionalLight(0xff99cc,1);
 light.position.set(5,10,5);
 scene.add(light);
 
-/* CARTA */
+/* GRUPO SOBRE */
 const group = new THREE.Group();
 scene.add(group);
 
-group.scale.set(0.9,0.9,0.9);
-
-const baseGeo = new THREE.BoxGeometry(4,2.5,0.3);
-const baseMat = new THREE.MeshStandardMaterial({color:0xffcce6});
+/* BASE SOBRE */
+const baseGeo = new THREE.PlaneGeometry(5,3);
+const baseMat = new THREE.MeshStandardMaterial({color:0xffcce6, side:THREE.DoubleSide});
 const base = new THREE.Mesh(baseGeo,baseMat);
 group.add(base);
 
-const flapGeo = new THREE.BoxGeometry(4,2.5,0.2);
-const flapMat = new THREE.MeshStandardMaterial({color:0xff4da6});
+/* TAPA TRIANGULAR */
+const shape = new THREE.Shape();
+shape.moveTo(-2.5,0);
+shape.lineTo(2.5,0);
+shape.lineTo(0,2);
+shape.lineTo(-2.5,0);
+
+const flapGeo = new THREE.ShapeGeometry(shape);
+const flapMat = new THREE.MeshStandardMaterial({color:0xff4da6, side:THREE.DoubleSide});
 const flap = new THREE.Mesh(flapGeo,flapMat);
-flap.position.y = 1.25;
-flap.position.z = -0.15;
+flap.position.y = 1.5;
+flap.position.z = 0.01;
 group.add(flap);
 
-/* CORAZONES FONDO */
-const hearts = [];
-const heartGeo = new THREE.SphereGeometry(0.15,16,16);
+/* CORAZONES REALES */
+const heartShape = new THREE.Shape();
+heartShape.moveTo(0,0);
+heartShape.bezierCurveTo(0,0, -0.5,-0.5, -1,0);
+heartShape.bezierCurveTo(-2,1.5, 0,3, 0,4);
+heartShape.bezierCurveTo(0,3,2,1.5,1,0);
+heartShape.bezierCurveTo(0.5,-0.5,0,0,0,0);
+
+const heartGeo = new THREE.ShapeGeometry(heartShape);
 const heartMat = new THREE.MeshStandardMaterial({color:0xff0066});
 
-for(let i=0;i<60;i++){
+const hearts = [];
+
+for(let i=0;i<40;i++){
   const h = new THREE.Mesh(heartGeo,heartMat);
+  h.scale.set(0.2,0.2,0.2);
   h.position.set(
     (Math.random()-0.5)*15,
-    Math.random()*10-5,
-    (Math.random()-0.5)*15
+    Math.random()*8-4,
+    (Math.random()-0.5)*10
   );
   scene.add(h);
   hearts.push(h);
@@ -143,44 +134,44 @@ for(let i=0;i<60;i++){
 
 let abierta = false;
 
-document.getElementById("btn").onclick = function(){
+window.addEventListener("click",()=>{
 
 if(abierta) return;
 abierta = true;
 
+/* música */
 document.getElementById("musica").play();
 
-/* abrir carta */
+/* abrir tapa */
 let abrir = setInterval(()=>{
-if(flap.rotation.x > -Math.PI/1.3){
+if(flap.rotation.x > -Math.PI/1.2){
 flap.rotation.x -= 0.05;
 }else{
 clearInterval(abrir);
-document.getElementById("titulo").innerHTML="Para ti 💖";
 document.getElementById("contenido").style.display="block";
 }
 },16);
 
 /* cámara entra */
 let zoom = setInterval(()=>{
-if(camera.position.z > 5){
+if(camera.position.z > 4){
 camera.position.z -= 0.03;
 }else{
 clearInterval(zoom);
 }
 },16);
 
-}
+});
 
-/* ANIMACIÓN GENERAL */
+/* animación flotando */
 function animate(){
 requestAnimationFrame(animate);
 
-group.rotation.y = Math.sin(Date.now()*0.001)*0.1;
+group.position.y = Math.sin(Date.now()*0.002)*0.2;
 
 hearts.forEach(h=>{
-h.position.y += 0.01;
-if(h.position.y > 6) h.position.y = -5;
+  h.position.y += 0.01;
+  if(h.position.y > 5) h.position.y = -4;
 });
 
 renderer.render(scene,camera);
